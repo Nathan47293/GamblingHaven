@@ -102,7 +102,7 @@ public class gh {
 				}
 				wr.close();
 
-				// Adds default balance (no bugs)
+				// Adds default balance
 				wr = new FileWriter("balances.txt"); 
 				for (int ba : balances) {
 					wr.write(ba + System.getProperty("line.separator"));
@@ -161,15 +161,25 @@ public class gh {
 	public static void hub() {
 		while(rerun == true && switch_game == true) {
 			System.out.println("Welcome to the Gambling Haven");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Type the number corresponding to the game you would like to play:");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("1 - Blackjack");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("2 - Poker");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("3 - Dice Roll");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("4 - Slot Machine");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("5 - War");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("6 - Roulette");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("7 - High-Low");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("8 - Coin Flip");
+			try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("9 - Reward Wheel (" + reward_wheel_spins + " free spins remaining)");
 
 			Scanner game_option_scanner = new Scanner(System.in);
@@ -202,7 +212,7 @@ public class gh {
 			case 1:
 				blackjack(); // basically perfectly fair
 			case 2:
-				poker(); // perfectly fair except user can chose to fold upon receiving a bad hand
+				poker(); // EV is 99.67% of original bet, however user can chose to fold upon receiving a bad hand
 			case 3:
 				dice_roll(); // fair
 			case 4:
@@ -239,7 +249,8 @@ public class gh {
 		int bj_dealer_total = 0;
 		int bj_u_indx1 = 0;
 		int bj_u_indx2 = 0;
-		String bj_user_card = "";
+		String bj_user_card1 = "";
+		String bj_user_card2 = "";
 		int bj_user_value = 0;
 		int bj_user_total = 0;
 
@@ -257,14 +268,15 @@ public class gh {
 
 
 		while (true) {
-			System.out.println("how much you betting pussy: ");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("how much are you betting? ");
 			bet = Integer.valueOf(sc.nextLine());
 
 
 			if (money - bet >= 0) {
 				break;
 			}
-			System.out.println("you dont got that kinda cash homie");
+			System.out.println("You don't have enough money");
 		}
 
 		// Player draws first card
@@ -276,16 +288,14 @@ public class gh {
 			bj_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 		}
 
-		bj_user_card = deck[bj_u_indx1][bj_u_indx2];
+		bj_user_card1 = deck[bj_u_indx1][bj_u_indx2];
 		deck[bj_u_indx1][bj_u_indx2] = null;
 		bj_user_value = values[bj_u_indx1];
 		bj_user_total += bj_user_value;
 
-		if (bj_user_card.contains("Ace")) {
+		if (bj_user_card1.contains("Ace")) {
 			bj_u_aces += 1;
 		}
-
-		System.out.println("You have dealt: " + bj_user_card);
 
 		// dealer draws first card face up
 		bj_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -305,7 +315,7 @@ public class gh {
 
 		bj_dealer_value = values[bj_d_indx1];
 		bj_dealer_total += bj_dealer_value;
-		System.out.println("The dealer has dealt: " + bj_dealer_card);
+
 
 		// Player draws second card
 		bj_u_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -316,18 +326,24 @@ public class gh {
 			bj_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 		}
 
-		bj_user_card = deck[bj_u_indx1][bj_u_indx2];
+		bj_user_card2 = deck[bj_u_indx1][bj_u_indx2];
 		deck[bj_u_indx1][bj_u_indx2] = null;
 		bj_user_value = values[bj_u_indx1];
 		bj_user_total += bj_user_value;
 
-		if (bj_user_card.contains("Ace")) {
+		if (bj_user_card2.contains("Ace")) {
 			bj_u_aces += 1;
 		}
+		System.out.print("You have been dealt: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(bj_user_card1 + ", ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(bj_user_card2);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Total Value: " + bj_user_total);
 
-		System.out.println("You have dealt: " + bj_user_card);
-		System.out.println("Your total value is " + bj_user_total);
 		if (bj_user_total == 21) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Congratulations! You have dealt a natural blackjack!");
 			natural_bj = true;
 		}
@@ -351,11 +367,17 @@ public class gh {
 		bj_dealer_value = values[bj_d_indx1];
 		bj_dealer_total += bj_dealer_value;
 
-		System.out.println("The dealer has dealt: Hole card");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print("The dealer has drawn: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(bj_dealer_card + ", ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Hole Card");
 		bj_hole_card = bj_dealer_card;
 
 		if (money - (bet * 2) >= 0 && natural_bj == false) {
-			System.out.println("double down pussy? (y/n)");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("double down? (y/n)");
 			bj_dd_confirmation = sc.nextLine();
 		}
 
@@ -372,12 +394,12 @@ public class gh {
 				bj_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 			}
 
-			bj_user_card = deck[bj_u_indx1][bj_u_indx2];
+			bj_user_card1 = deck[bj_u_indx1][bj_u_indx2];
 			deck[bj_u_indx1][bj_u_indx2] = null;
 			bj_user_value = values[bj_u_indx1];
 			bj_user_total += bj_user_value;
 
-			if (bj_user_card.contains("Ace")) {
+			if (bj_user_card1.contains("Ace")) {
 				bj_u_aces += 1;
 			}
 
@@ -397,9 +419,11 @@ public class gh {
 					}
 				}
 			}
-
-			System.out.println("You have dealt: " + bj_user_card);
-			System.out.println("Your total value is " + bj_user_total);
+			System.out.print("You have been dealt: ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(bj_user_card1);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("Total Value: " + bj_user_total);
 		}
 
 		if (bj_double_down == false && natural_bj == false) {
@@ -417,12 +441,12 @@ public class gh {
 				bj_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 			}
 
-			bj_user_card = deck[bj_u_indx1][bj_u_indx2];
+			bj_user_card1 = deck[bj_u_indx1][bj_u_indx2];
 			deck[bj_u_indx1][bj_u_indx2] = null;
 			bj_user_value = values[bj_u_indx1];
 			bj_user_total += bj_user_value;
 
-			if (bj_user_card.contains("Ace")) {
+			if (bj_user_card1.contains("Ace")) {
 				bj_u_aces += 1;
 			}
 
@@ -443,20 +467,27 @@ public class gh {
 					}
 				}
 			}
-
-			System.out.println("You have dealt: " + bj_user_card);
-			System.out.println("Your total value is: " + bj_user_total);
+			
+			System.out.print("You have been dealt: ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(bj_user_card1);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("Total Value: " + bj_user_total);
 
 			if (bj_user_total > 21) {
 				break;
 			}
-
+			
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Hit or stand (h/s)?");
 			bj_user_input = sc.nextLine();
 		}
 
-		System.out.println("The dealer's Hole Card is: " + bj_hole_card);
-		System.out.println("Their total value is: " + bj_dealer_total);
+		System.out.print("The dealer's Hole Card is: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(bj_hole_card);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Total Value: " + bj_dealer_total);
 
 		// Once the player stands, the dealer reveals the hole and draws if his total is below 17
 		while (bj_dealer_total < 17 && bj_user_total < 22) {
@@ -494,50 +525,59 @@ public class gh {
 					}
 				}
 			}
-
-			System.out.println("The dealer has dealt: " + bj_dealer_card);
-			System.out.println("Their total value is: " + bj_dealer_total);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The dealer has been dealt: ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(bj_dealer_card);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("Total Value: " + bj_dealer_total);
+			
 			if (bj_dealer_total > 21) {
 				break;
 			}
 		}
 
 		// End Game, displaying totals and outcome
-
-		System.out.println("Dealer total: " + bj_dealer_total);
-		System.out.println("Your total: " + bj_user_total);
-
 		if (bj_dealer_total > 21) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("The dealer has busted! You Win");
 			if (natural_bj == true) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("For recieving a natural blackjack, you get a 1.5x payout");
 				money += bet * 1.5;
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 1x payout");
 				money += bet;
 
 			}
 		}
 		if (bj_user_total > 21) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You busted! You Lose the round and your bet");
 			money -= bet;
 		}
 		if (bj_dealer_total < 22 && bj_user_total < 22) {
 			if (bj_user_total > bj_dealer_total) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
 				if (natural_bj == true) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("For recieving a natural blackjack, you get a 1.5x payout");
 					money += bet * 1.5;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You recieve a 1x payout");
 					money += bet;
 				}
 			}
 			if (bj_user_total < bj_dealer_total) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the round and your bet");
 				money -= bet;
 			}
 			if (bj_user_total == bj_dealer_total) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Tie! You get your bet back");
 			}
 		}
@@ -554,10 +594,15 @@ public class gh {
 
 
 		Scanner game_option_scanner = new Scanner(System.in);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
-		
+
 		int input = Integer.valueOf(game_option_scanner.nextLine());
 		if(input == 0) {
 			switch_game = false;
@@ -573,6 +618,7 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
@@ -580,9 +626,7 @@ public class gh {
 	}
 
 	public static void poker() {
-
 		int answer = -1;
-
 		int[] values = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
 		String[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
@@ -594,7 +638,8 @@ public class gh {
 				deck[x][y] = ranks[x] + " of " + suits[y];
 			}
 		}
-		double user_hand_strength = 0;
+		double user_hand_strength = 0; // The calculation for this doesn't allign with standard rules
+		// Instead, I have formulated my own arbitrary hand strength rating system
 		double dealer_hand_strength = 0;
 
 		int poker_u_indx1 = 0;
@@ -644,10 +689,15 @@ public class gh {
 		poker_user_value2 = values[poker_u_indx1];
 		poker_user_suit2 = poker_u_indx2;
 
-
-		System.out.println("Your hand is: " + poker_user_card1 + " and " + poker_user_card2);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print("Your hand is ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(poker_user_card1 + ", ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(poker_user_card2);
 
 		while(true) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Do you bet (0) or fold (1)?");
 			answer = Integer.valueOf(sc.nextLine());
 			if(answer == 0 || answer == 1) {
@@ -659,7 +709,11 @@ public class gh {
 		if(answer == 1) {
 			Scanner game_option_scanner = new Scanner(System.in);
 			System.out.println("Do you want to play again? (0)?");
+
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Do you want to switch game? (1)?");
+
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 			int input = Integer.valueOf(game_option_scanner.nextLine());
@@ -677,6 +731,7 @@ public class gh {
 
 			if (input == 2) {
 				System.out.println("Your final balance: $" + money);
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Thanks for playing!");
 				System.exit(0);
 			}
@@ -685,26 +740,40 @@ public class gh {
 
 		if(answer == 0) {
 			while (true) {
-				System.out.println("how much you betting pussy: ");
+				System.out.println("how much are you betting?");
 				bet = Integer.valueOf(sc.nextLine());
 
 
 				if (money - bet >= 0) {
 					break;
 				}
-				System.out.println("you dont got that kinda cash homie");
+				System.out.println("You don't have enough money");
 			}
 
-			/*System.out.println("Royal Flush: 10 times the initital bet");
-			System.out.println("Straight Flush: 5 times the initial bet");
-			System.out.println("Four of a Kind: 4 times the inital bet");
-			System.out.println("Full House: 3 times the initial bet");
-			System.out.println("Flush: 2 times the inital bet");
-			System.out.println("Straight: 2 times the intial bet");
-			System.out.println("Three of a Kind: 1 times the initial bet");
-			System.out.println("Two Pair: 0.75 times the intial bet");
-			System.out.println("One Pair: 0.5 times the inital bet");
-			System.out.println("High Card: 0.25 times the initial bet");*/
+			/* https://www.pokerstrategy.com/strategy/various-poker/texas-holdem-probabilities/
+			 * Royal Flush - 0.003232062%
+			 * Straight Flush - 0.027850748%
+			 * Four of a Kind - 0.168067227%
+			 * Full House - 2.596102271%
+			 * Flush - 3.025494123%
+			 * Straight - 4.619382087%
+			 * Three of a Kind - 4.829869755%
+			 * Two Pair - 23.49553641%
+			 * Pair - 43.82254574%
+			 * High card - 17.41191958%
+			 * EV contributions add to 0.9967
+			 * So EV is 99.67% of initial bet, basically fair */
+
+			/*System.out.println("Royal Flush: 100 times the initital bet");
+			System.out.println("Straight Flush: 50 times the initial bet");
+			System.out.println("Four of a Kind: 30 times the inital bet");
+			System.out.println("Full House: 7 times the initial bet");
+			System.out.println("Flush: 5 times the inital bet");
+			System.out.println("Straight: 4 times the intial bet");
+			System.out.println("Three of a Kind: 3 times the initial bet");
+			System.out.println("Two Pair: 1 times the intial bet");
+			System.out.println("One Pair: 0.3 times the inital bet");
+			System.out.println("High Card: No payout");*/
 
 
 			// dealer draws their hand
@@ -734,8 +803,6 @@ public class gh {
 			poker_dealer_value2 = values[poker_d_indx1];
 			poker_dealer_suit2 = poker_d_indx2;
 
-			System.out.println("Your hand is: " + poker_user_card1 + " and " + poker_user_card2);
-			System.out.println("The dealer's hand is: " + poker_dealer_card1 + " and " + poker_dealer_card2);
 
 			// First Table Card
 			poker_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -782,6 +849,13 @@ public class gh {
 			int tablecard3_value = values[poker_d_indx1];
 			int tablecard3_suit = poker_d_indx2;
 
+			System.out.print("The Flop is ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(tablecard1 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(tablecard2 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(tablecard3);
 
 			// Fourth Table Card
 			poker_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -798,6 +872,10 @@ public class gh {
 			int tablecard4_value = values[poker_d_indx1];
 			int tablecard4_suit = poker_d_indx2;
 
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The Turn is ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(tablecard4);
 
 			// Fifth Table Card
 			poker_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -814,7 +892,10 @@ public class gh {
 			int tablecard5_value = values[poker_d_indx1];
 			int tablecard5_suit = poker_d_indx2;
 
-			System.out.println("The table cards are: " + tablecard1 + ", " + tablecard2 + ", " + tablecard3 + ", " + tablecard4 + ", " + tablecard5);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The River is ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(tablecard5);
 
 			// Check User Hand Strength
 			int[] user_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_user_value1, poker_user_value2};
@@ -852,30 +933,7 @@ public class gh {
 				}
 			}
 
-			// DEBUG
-			/*
-			System.out.println("user card values");
-			for (int i = 0; i < user_card_values.length; i++) {
-				System.out.println(user_card_values[i]);
-			}
-
-			System.out.println("user card suits: Hearts, Diamonds, Clubs, Spades");
-			for (int i = 0; i < user_card_suits.length; i++) {
-				System.out.println(user_card_suits[i]);
-			}
-
-			System.out.println("dealer card values");
-			for (int i = 0; i < dealer_card_values.length; i++) {
-				System.out.println(dealer_card_values[i]);
-			}
-
-			System.out.println("dealer card suits: Hearts, Diamonds, Clubs, Spades");
-			for (int i = 0; i < dealer_card_suits.length; i++) {
-				System.out.println(dealer_card_suits[i]);
-			}
-			 */
-
-			// High Card - 0.25x Payout
+			// High Card
 			int user_high_card = poker_user_value1;
 			int user_highcard_kicker = poker_user_value2;
 
@@ -909,8 +967,7 @@ public class gh {
 				}
 			}
 
-			// One Pair: 0.5x Payout
-			// Two Pair - 0.75x Payout
+			// One Pair and two pair
 
 			// Checking for user pairs
 			List<Integer> user_duplicates = new ArrayList<>();
@@ -975,7 +1032,8 @@ public class gh {
 				}
 
 			}
-			if(user_pair_amount == 2) {
+			
+			if(user_pair_amount >= 2) {
 				user_hand_strength = 3;
 				user_first_pair_value = user_duplicates.get(0);
 				user_second_pair_value = user_duplicates.get(1);
@@ -1028,7 +1086,7 @@ public class gh {
 
 			}
 
-			if(dealer_pair_amount == 2) {
+			if(dealer_pair_amount >= 2) {
 				dealer_hand_strength = 3;
 				dealer_first_pair_value = dealer_duplicates.get(0);
 				dealer_second_pair_value = dealer_duplicates.get(1);
@@ -1098,8 +1156,7 @@ public class gh {
 				}
 			}
 
-			// Three of a Kind - 1x Payout (tested and works, as of writing flush and straight need testing)
-			// int[] user_card_values
+			// Three of a Kind
 			int user_highest_toak_value = 0;
 			for(int value : user_card_values) {
 				int frequency = 0;
@@ -1183,13 +1240,13 @@ public class gh {
 				}
 			}
 
-			// Straight - 2x Payout
+			// Straight
 			int user_consecutiveCount = 0;
 			int user_highestCard = 0;
 			boolean user_hasStraight = false;
 
 			for (int i = 0; i < user_card_values.length - 1; i++) {
-				if (user_card_values[i] - values[i + 1] == 1) {
+				if (user_card_values[i] - user_card_values[i + 1] == 1) {
 					user_consecutiveCount++;
 					user_highestCard = Math.max(user_highestCard, user_card_values[i]);
 				} else {
@@ -1207,7 +1264,7 @@ public class gh {
 			boolean dealer_hasStraight = false;
 
 			for (int i = 0; i < dealer_card_values.length - 1; i++) {
-				if (dealer_card_values[i] - values[i + 1] == 1) {
+				if (dealer_card_values[i] - dealer_card_values[i + 1] == 1) {
 					dealer_consecutiveCount++;
 					dealer_highestCard = Math.max(dealer_highestCard, dealer_card_values[i]);
 				} else {
@@ -1246,7 +1303,7 @@ public class gh {
 				}
 			}
 
-			// Flush - 2x Payout
+			// Flush
 			// Checking for user flush and recording highest value in flush
 			int[] user_suitCount = new int[4]; // Array to count the occurrences of each suit
 			int user_highestCardValue = 0;
@@ -1297,33 +1354,31 @@ public class gh {
 			}
 
 			if(user_has_flush == true && dealer_has_flush == false) {
-				user_hand_strength = 5;
+				user_hand_strength = 6;
 			}
 
 			if(user_has_flush == false && dealer_has_flush == true) {
-				dealer_hand_strength = 5;
+				dealer_hand_strength = 6;
 			}
 
 			if(user_has_flush == true && dealer_has_flush == true) {
 				if(user_highestCardValue > dealer_highestCardValue) {
-					user_hand_strength = 5.5;
-					dealer_hand_strength = 5;
+					user_hand_strength = 6.5;
+					dealer_hand_strength = 6;
 				}
 
 				if(user_highestCardValue < dealer_highestCardValue) {
-					user_hand_strength = 5;
-					dealer_hand_strength = 5.5;
+					user_hand_strength = 6;
+					dealer_hand_strength = 6.5;
 				}
 
 				if(user_highestCardValue == dealer_highestCardValue) {
-					user_hand_strength = 5;
-					dealer_hand_strength = 5;
+					user_hand_strength = 6;
+					dealer_hand_strength = 6;
 				}
 			}
 
-			// Full House - 3x Payout
-			// Strength is 6 and 6.5
-			// CONTINUE
+			// Full House
 
 			int threeOfAKindValue = -1;
 			int pairValue = -1;
@@ -1424,7 +1479,7 @@ public class gh {
 				}
 			}
 
-			// Four of a Kind - 4x Payout
+			// Four of a Kind
 
 			int user_highest_foak_value = 0;
 			for(int value : user_card_values) {
@@ -1509,13 +1564,11 @@ public class gh {
 				}
 			}
 
-			// Straight Flush - 5x Payout
+			// Straight Flush
 			int user_maxStraightFlushValue = 0;
 			int dealer_maxStraightFlushValue = 0;
 			boolean user_hasStraightFlush = false;
 			boolean dealer_hasStraightFlush = false;
-
-
 
 			// Checking user for highest straight flush
 			// Iterate through all possible starting values for straight flushes
@@ -1595,7 +1648,7 @@ public class gh {
 			}
 
 
-			// Royal Flush - 10x Payout - BUG always gives 10
+			// Royal Flush
 			// User
 			int[] user_royalFlushValues = {10, 11, 12, 13, 14}; // Values for 10, Jack, Queen, King, Ace
 			boolean[] user_foundValues = new boolean[5];
@@ -1664,19 +1717,139 @@ public class gh {
 				dealer_hand_strength = 10;
 			}
 
-			System.out.println("User hand strength is " + user_hand_strength);
-			System.out.println("Dealer hand strength is " + dealer_hand_strength);
+			String user_hand = "";
+			String dealer_hand = "";
+			double payout_multiplier = 0;
+
+			// Assigning user hand string and payout multiplier
+			if(user_hand_strength == 0) {
+				user_hand = "N/A";
+			}
+			if(user_hand_strength == 1) {
+				user_hand = "High Card";
+			}
+			if(user_hand_strength == 2 || user_hand_strength == 2.5) {
+				user_hand = "One Pair";
+				payout_multiplier = 0.3;
+			}
+			if(user_hand_strength == 3 || user_hand_strength == 3.5) {
+				user_hand = "Two Pair";
+				payout_multiplier = 1;
+			}
+			if(user_hand_strength == 4 || user_hand_strength == 4.5) {
+				user_hand = "Three of a Kind";
+				payout_multiplier = 3;
+			}
+			if(user_hand_strength == 5 || user_hand_strength == 5.5) {
+				user_hand = "Straight";
+				payout_multiplier = 4;
+			}
+			if(user_hand_strength == 6 || user_hand_strength == 6.5) {
+				user_hand = "Flush";
+				payout_multiplier = 5;
+			}
+			if(user_hand_strength == 7 || user_hand_strength == 7.5) {
+				user_hand = "Full House";
+				payout_multiplier = 7;
+			}
+			if(user_hand_strength == 8 || user_hand_strength == 8.5) {
+				user_hand = "Four of a Kind";
+				payout_multiplier = 30;
+			}
+			if(user_hand_strength == 9 || user_hand_strength == 9.5) {
+				user_hand = "Straight Flush";
+				payout_multiplier = 50;
+			}
+			if(user_hand_strength == 10) {
+				user_hand = "Royal Flush";
+				payout_multiplier = 100;
+			}
+
+			// Assigning dealer hand string
+			if(dealer_hand_strength == 0) {
+				dealer_hand = "N/A";
+			}
+			if(dealer_hand_strength == 1) {
+				dealer_hand = "High Card";
+			}
+			if(dealer_hand_strength == 2 || dealer_hand_strength == 2.5) {
+				dealer_hand = "One Pair";
+			}
+			if(dealer_hand_strength == 3 || dealer_hand_strength == 3.5) {
+				dealer_hand = "Two Pair";
+			}
+			if(dealer_hand_strength == 4 || dealer_hand_strength == 4.5) {
+				dealer_hand = "Three of a Kind";
+			}
+			if(dealer_hand_strength == 5 || dealer_hand_strength == 5.5) {
+				dealer_hand = "Straight";
+			}
+			if(dealer_hand_strength == 6 || dealer_hand_strength == 6.5) {
+				dealer_hand = "Flush";
+			}
+			if(dealer_hand_strength == 7 || dealer_hand_strength == 7.5) {
+				dealer_hand = "Full House";
+			}
+			if(dealer_hand_strength == 8 || dealer_hand_strength == 8.5) {
+				dealer_hand = "Four of a Kind";
+			}
+			if(dealer_hand_strength == 9 || dealer_hand_strength == 9.5) {
+				dealer_hand = "Straight Flush";
+			}
+			if(dealer_hand_strength == 10) {
+				dealer_hand = "Royal Flush";
+			}
+
+			if(user_hand_strength != 0) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("You have a " + user_hand);
+			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("You have no significant hand");
+			}
+
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The dealer's hand is ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(poker_dealer_card1 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(poker_dealer_card2);
+
+			if(dealer_hand_strength != 0) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("The dealer has a " + dealer_hand);
+			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("The dealer has no significant hand");
+			}
 
 			if(dealer_hand_strength > user_hand_strength) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("The dealer wins!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the round and your bet");
 				money -= bet;
 			}
 
 			if(dealer_hand_strength < user_hand_strength) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
-				System.out.println("You recieve a 1x payout");
-				money += bet;
+				if(user_hand_strength == 1) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+					System.out.println("No payouts are recieved for winning with a high card");
+				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+					System.out.println("You recieve a " + payout_multiplier + "x payout");
+					money += bet * payout_multiplier;
+				}
+
+			}
+
+			if(dealer_hand_strength == user_hand_strength) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("Players hands are equal");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("You get your bet back");
 			}
 
 			balances.set(user_indx, money);
@@ -1693,8 +1866,13 @@ public class gh {
 		}
 
 		Scanner game_option_scanner = new Scanner(System.in);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 		int input = Integer.valueOf(game_option_scanner.nextLine());
@@ -1712,6 +1890,7 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
@@ -1723,8 +1902,11 @@ public class gh {
 		int answer2 = -1;
 
 		while (true) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Choose what type of dice roll bet you're placing:");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Bet on sum being odd or even (1x payout) - 0");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Bet on range of sum (3.6x payout) - 1");
 			answer = Integer.valueOf(sc.nextLine());
 
@@ -1749,8 +1931,11 @@ public class gh {
 
 		while (answer == 1) {
 			System.out.println("Bet on the sum of the die");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("(2, 3, 4, 5) - 0"); // 10/36 chance
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("(6, 8) - 1"); // 10/36 chance
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("(9, 10, 11, 12) - 2"); // 10/36 chance
 			answer2 = Integer.valueOf(sc.nextLine());
 
@@ -1762,31 +1947,43 @@ public class gh {
 		}
 
 		while (true) {
-			System.out.println("how much you betting pussy: ");
+			System.out.println("how much are you betting? ");
 			bet = Integer.valueOf(sc.nextLine());
 
 			if (money - bet >= 0) {
 				break;
 			}
-			System.out.println("you dont got that kinda cash homie");
+			System.out.println("You don't have enough money");
 		}
 
 		int die1 = (int) Math.floor(1 + Math.random() * 7); // between 1 and 6
 		int die2 = (int) Math.floor(1 + Math.random() * 7); // between 1 and 6
 		int sum = die1 + die2;
 
-		System.out.println("The value of the first die is " + die1);
-		System.out.println("The value of the second die is " + die2);
-		System.out.println("The sum of the die is " + sum);
+		System.out.print("The value of the first die is ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(die1);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print("The value of the second die is ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(die2);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print("The sum of the die is ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(sum);
 
 
 		if(answer == 0 && answer2 == 0) { // Betting on odd
 			if(sum % 2 == 1) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 1x payout");
 				money += bet;
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the game and your bet");
 				money -= bet;
 			}
@@ -1794,11 +1991,15 @@ public class gh {
 
 		if(answer == 0 && answer2 == 1) { // Betting on even
 			if(sum % 2 == 0) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 1x payout");
 				money += bet;
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the game and your bet");
 				money -= bet;
 			}
@@ -1806,11 +2007,15 @@ public class gh {
 
 		if(answer == 1 && answer2 == 0) { // Betting on (2,3,4,5)
 			if(sum == 2 || sum == 3 || sum == 4 || sum == 5) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 2.6x payout");
 				money = (int) (money + bet*2.6);
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the game and your bet");
 				money -= bet;
 			}
@@ -1818,11 +2023,15 @@ public class gh {
 
 		if(answer == 1 && answer2 == 1) { // Betting on (6,8)
 			if(sum == 6 || sum == 8) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 2.6x payout");
 				money = (int) (money + bet*2.6);
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the game and your bet");
 				money -= bet;
 			}
@@ -1830,11 +2039,15 @@ public class gh {
 
 		if(answer == 1 && answer2 == 2) { // Betting on (9,10,11,12)
 			if(sum == 9 || sum == 10 || sum == 11 || sum == 12) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Win!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a 2.6x payout");
 				money = (int) (money + bet*2.6);
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You Lose the game and your bet");
 				money -= bet;
 			}
@@ -1853,8 +2066,13 @@ public class gh {
 		}
 
 		Scanner game_option_scanner = new Scanner(System.in);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 		int input = Integer.valueOf(game_option_scanner.nextLine());
@@ -1872,18 +2090,19 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
 	}
 
 	public static void slot_machine() {
-
 		int free_spins = 0;
 		boolean keep_playing = false;
 
 		Scanner sc = new Scanner(System.in);
 		while (true) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("how much you betting for each spin: ");
 			bet = Integer.valueOf(sc.nextLine());
 
@@ -1907,14 +2126,19 @@ public class gh {
 			int bet_multiplier_reward = 0;
 			double displayfreespins = free_spins;
 			String formattedfreespins = String.format("%02.0f", displayfreespins);
-
+			
 			System.out.println("One $ is 1x your bet");
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Two $ is 24x your bet");
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Three $ is 54x your bet");
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("One 7 is a free spin");
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Two 7 is 7 free spins and 17x your bet");
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Three 7 is 17 free spins and 37x your bet");
-
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			double displaybet = bet;
 			String formattedbet = String.format("%04.0f", displaybet);
 			// ASCII art of the slot machine screen with a lever
@@ -1945,6 +2169,7 @@ public class gh {
 			}
 
 			// Wait for user input to activate the lever
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Press Enter to activate the lever.");
 			Scanner scanner = new Scanner(System.in);
 			scanner.nextLine();
@@ -1971,7 +2196,9 @@ public class gh {
 			result[0] = symbols1[2];
 			result[1] = symbols2[2];
 			result[2] = symbols3[2];
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("\nResult:");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println(result);
 
 			// Calculating dollar count and seven count
@@ -1994,33 +2221,44 @@ public class gh {
 
 			if(dollar_count != 0 && seven_count == 0) {
 				money += bet*bet_multiplier_reward;
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + dollar_count + " $ in your spin");
-				System.out.println("You recieve a " + bet_multiplier_reward + "x payout!");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
 			}
 
 			if(dollar_count == 0 && seven_count != 0) {
 				money += bet*bet_multiplier_reward;
 				free_spins += free_spin_reward;
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + seven_count + " 7 in your spin");
 				if(seven_count > 1) {
-					System.out.println("You recieve a " + bet_multiplier_reward + "x payout!");
+					try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+					System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
 				}
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve " + free_spin_reward + " free spins!");
 			}
 
 			if(dollar_count != 0 && seven_count != 0) {
 				money += bet*bet_multiplier_reward;
 				free_spins += free_spin_reward;
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + seven_count + " 7" + " and " + dollar_count + " $ in your spin");
-				System.out.println("You recieve a " + bet_multiplier_reward + "x payout!");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve " + free_spin_reward + " free spins!");
 			}
 
 			if(dollar_count == 0 && seven_count == 0) {
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You didn't get any 7 or $ in your spin");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve no reward");
 			}
-
+			
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Your balance is now $" + money);
 			balances.set(user_indx, money);
 
@@ -2038,10 +2276,15 @@ public class gh {
 			int input = -1;
 
 			while(true) {
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue (0)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue but change your bet (only works when you have no free spins) (1)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to switch game? (2)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to quit the Gambling Haven? (3)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Keep in mind that switching games or quitting will reset your free spins");
 				input = Integer.valueOf(game_option_scanner.nextLine());
 				if(input == 0 || input == 2 || input == 3) {
@@ -2063,6 +2306,7 @@ public class gh {
 				keep_playing = true;
 
 				while (true) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("how much you betting for each spin: ");
 					bet = Integer.valueOf(sc.nextLine());
 
@@ -2082,6 +2326,7 @@ public class gh {
 
 			if (input == 3) {
 				System.out.println("Your final balance: $" + money);
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Thanks for playing!");
 				System.exit(0);
 			}
@@ -2154,14 +2399,14 @@ public class gh {
 
 
 		while (true) {
-			System.out.println("how much you betting pussy: ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("how much are you betting? ");
 			bet = Integer.valueOf(sc.nextLine());
-
-
+			
 			if (money - bet >= 0) {
 				break;
 			}
-			System.out.println("you dont got that kinda cash homie");
+			System.out.println("You don't have enough money");
 		}
 
 		// Player draws first card
@@ -2177,9 +2422,9 @@ public class gh {
 		deck[war_u_indx1][war_u_indx2] = null;
 		war_user_value = values[war_u_indx1];
 
-
-
-		System.out.println("You have dealt: " + war_user_card);
+		System.out.print("You have dealt: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(war_user_card);
 
 		// dealer draws first card face up
 		war_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -2195,14 +2440,19 @@ public class gh {
 
 
 		war_dealer_value = values[war_d_indx1];
-		System.out.println("The dealer has dealt: " + war_dealer_card);
-
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print("The dealer has dealt: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(war_dealer_card);
+		
 		if(war_dealer_value == war_user_value) {
 			war = true;
 		}
 
 		while(war) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("The cards have the same value");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("War has started!");
 
 			// Player draws 3 face_down cards
@@ -2232,8 +2482,15 @@ public class gh {
 				war_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 			}
 			String player_3 = deck[war_u_indx1][war_u_indx2];
-
-			System.out.println("The player draws 3 face down cards");
+			
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The player draws a ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(player_1 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(player_2 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(player_3);
 
 
 			// Dealer draws 3 face_down cards
@@ -2264,7 +2521,14 @@ public class gh {
 			}
 			String dealer_3 = deck[war_u_indx1][war_u_indx2];
 
-			System.out.println("The dealer draws 3 face down cards");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The dealer draws a ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(dealer_1 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print(dealer_2 + ", ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(dealer_3);
 
 
 			// Player draws fourth card
@@ -2280,7 +2544,6 @@ public class gh {
 			deck[war_u_indx1][war_u_indx2] = null;
 			war_user_value = values[war_u_indx1];
 
-			System.out.println("The player draws their fourth card");
 
 			// dealer draws fourth card
 			war_d_indx1 = (int) Math.floor(Math.random() * 13); // between 0 and 12
@@ -2294,14 +2557,14 @@ public class gh {
 			war_dealer_card = deck[war_d_indx1][war_d_indx2];
 			deck[war_d_indx1][war_d_indx2] = null;
 
-			System.out.println("The dealer draws their fourth card");
-
-			System.out.println("The player's first 3 cards are: " + player_1 + ", " + player_2 + ", " + player_3);
-
-			System.out.println("The dealer's first 3 cards are: " + dealer_1 + ", " + dealer_2 + ", " + dealer_3);
-
-			System.out.println("The player's fourth card is a " + war_user_card);
-			System.out.println("The dealer's fourth card is a " + war_dealer_card);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The player's fourth card is a ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(war_user_card);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("The dealer's fourth card is a ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(war_dealer_card);
 
 			if(war_dealer_value != war_user_value) {
 				war = false;
@@ -2313,13 +2576,17 @@ public class gh {
 
 
 		if(war_dealer_value > war_user_value) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("The dealer wins!");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You Lose the round and your bet");
 			money -= bet;
 		}
 
 		if(war_dealer_value < war_user_value) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You Win!");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You recieve a 1x payout");
 			money += bet;
 		}
@@ -2337,8 +2604,13 @@ public class gh {
 		}
 
 		Scanner game_option_scanner = new Scanner(System.in);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 		int input = Integer.valueOf(game_option_scanner.nextLine());
@@ -2356,6 +2628,7 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
@@ -2370,6 +2643,7 @@ public class gh {
 
 		while (true) {
 			Scanner sc = new Scanner(System.in);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("how much you betting: ");
 			bet = Integer.valueOf(sc.nextLine());
 
@@ -2379,9 +2653,10 @@ public class gh {
 			System.out.println("either you dont got that kinda cash or you didnt write a number above 0");
 		}
 
-
 		System.out.println("What type of bet would you like to make?");
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Inside Bet (higher payout, lower probability) - 0");
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Outsdie Bet (lower payout, higher probability) - 1");
 		Scanner scanner = new Scanner(System.in);
 		int answer1 = Integer.valueOf(scanner.nextLine());
@@ -2391,8 +2666,11 @@ public class gh {
 
 		if(answer1 == 0) {
 			System.out.println("What bet what you like to make?");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Straight Up (Betting on a single number)- 0");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Split Bet (Betting on two numbers) - 1");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Trio (Betting on zero and its two neighboring numbers) - 2");
 			answer2 = Integer.valueOf(scanner.nextLine());
 
@@ -2400,9 +2678,13 @@ public class gh {
 
 		if(answer1 == 1) {
 			System.out.println("What bet what you like to make?");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Red/Black - 0");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Even/Odd - 1");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Low/High (Betting on 1-18 or 19-36) - 2");
+			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Dozens (Betting on 1-12, 13-24, or 25-36) - 3");
 			answer2 = Integer.valueOf(scanner.nextLine());
 		}
@@ -2448,20 +2730,26 @@ public class gh {
 		if(colors[winning_indx] == 1) {winning_color = "Black";}
 		if(colors[winning_indx] == 2) {winning_color = "Green";}
 
-		System.out.println("The Wheel is Spinning...");
-		try {
-			Thread.sleep(1000); // delay
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		System.out.print("The Wheel is Spinning");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(".");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(".");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(".");
+		
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("The Winning Number is " + winning_number + " Which is " + winning_color);
 
 		if(answer1 == 0 && answer2 == 0) {
 			if(winning_number == answer3) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You guessed the corret number!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You win 37x your bet");
 				money += bet * 36;
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("The winning number was not " + answer3 + ", you lose your bet");
 				money -= bet;
 			}
@@ -2469,10 +2757,13 @@ public class gh {
 
 		if(answer1 == 0 && answer2 == 1) {
 			if(winning_number == answer3 || winning_number == answer4) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You guessed the corret number!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You win 18.5x your bet");
 				money += bet * 18.5;
 			} else {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("The winning number was not " + answer3 + " or " + answer4 + ", you lose your bet");
 				money -= bet;
 			}
@@ -2480,11 +2771,14 @@ public class gh {
 
 		if(answer1 == 0 && answer2 == 2) {
 			if(winning_number == 36 || winning_number == 0 || winning_number == 1) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You guessed the corret number!");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You win 12.35x your bet");
 				money += bet * 12.35;
 			} else {
-				System.out.println("The winning number was not " + answer3 + " or " + answer4 + ", you lose your bet");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+				System.out.println("The winning number was not 36, 0, or 1, you lose your bet");
 				money -= bet;
 			}
 		}
@@ -2492,21 +2786,29 @@ public class gh {
 		if(answer1 == 1 && answer2 == 0) {
 			if(answer3 == 0) { // if they bet red
 				if(winning_color.equals("Red")) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed the corret color!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("The color you guessed was wrong");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
 			} else {
 				if(winning_color.equals("Black")) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed the corret color!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("The color you guessed was wrong");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
@@ -2516,21 +2818,29 @@ public class gh {
 		if(answer1 == 1 && answer2 == 1) { // even is zero, odd is one
 			if(answer3 == 0) { // if they bet even
 				if(winning_number % 2 == 0) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
 			} else {
 				if(winning_number % 2 == 1) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
@@ -2540,21 +2850,29 @@ public class gh {
 		if(answer1 == 1 && answer2 == 2) { // 1-18 (0) or 19-36 (2)
 			if(answer3 == 0) { // if they bet 1-18
 				if(winning_number > 0 && winning_number < 19) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
 			} else {
 				if(winning_number > 18) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 1x your bet");
 					money += bet;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
@@ -2564,33 +2882,45 @@ public class gh {
 		if(answer1 == 1 && answer2 == 3) { //1-12 (0), 13-24 (1), or 25-36 (2)
 			if(answer3 == 0) { // 1-12
 				if(winning_number > 0 && winning_number < 13) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 2x your bet");
 					money += bet * 2;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
 			} 
 			if(answer3 == 1) { // 13-24
 				if(winning_number > 12 && winning_number < 25) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 2x your bet");
 					money += bet * 2;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
 			}
 			if(answer3 == 2) { // 25-36
 				if(winning_number > 24) {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed correctly!");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You win 2x your bet");
 					money += bet * 2;
 				} else {
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You guessed incorrectly");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 					money -= bet;
 				}
@@ -2609,8 +2939,13 @@ public class gh {
 			e.printStackTrace();
 		}
 
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 		int input = Integer.valueOf(scanner.nextLine());
@@ -2628,6 +2963,7 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
@@ -2649,6 +2985,7 @@ public class gh {
 
 
 		while (true) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("how much you betting per round: ");
 			bet = Integer.valueOf(sc.nextLine());
 
@@ -2682,8 +3019,11 @@ public class gh {
 		double return_multiplier_lower = probability_of_higher / probability_of_lower;
 		return_multiplier_lower = Double.parseDouble(String.format("%.2f", return_multiplier_lower));
 
-		System.out.println("The dealer has dealt: " + card1);
-
+		System.out.print("The dealer has dealt: ");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(card1);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		
 		do {
 			keep_playing = false;
 
@@ -2708,16 +3048,22 @@ public class gh {
 			deck[card2_indx1][card2_indx2] = null;
 			int card2_value = values[card2_indx1];
 
-			System.out.println("The dealer has dealt: " + card2);
+			System.out.print("The dealer has dealt: ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(card2);
 
 			if(answer == 0) {
 				if(card2_value > card1_value) {
 					money += bet * return_multiplier_higher;
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You were right");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You recieve a " + return_multiplier_higher + "x payout");
 				} else {
 					money -= bet;
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You were wrong");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 				}
 			}
@@ -2725,15 +3071,20 @@ public class gh {
 			if(answer == 1) {
 				if(card2_value < card1_value) {
 					money += bet * return_multiplier_lower;
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You were right");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You recieve a " + return_multiplier_lower + "x payout");
 				} else {
 					money -= bet;
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You were wrong");
+					try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You lose your bet");
 				}
 			}
-
+			
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Your balance is: $" + money);
 
 			balances.set(user_indx, money);
@@ -2765,9 +3116,13 @@ public class gh {
 			int input = -1;
 			while(true) {
 				Scanner game_option_scanner = new Scanner(System.in);
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue (0)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue but change your bet (1)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to switch game? (2)?");
+				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to quit the Gambling Haven? (3)?");
 				input = Integer.valueOf(game_option_scanner.nextLine());
 				if(input == 0 || input == 1 || input == 2 || input == 3) {
@@ -2802,6 +3157,7 @@ public class gh {
 
 			if (input == 3) {
 				System.out.println("Your final balance: $" + money);
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Thanks for playing!");
 				System.exit(0);
 			}
@@ -2815,7 +3171,8 @@ public class gh {
 		Scanner sc = new Scanner(System.in);
 		int answer = -1;
 		while (true) {
-			System.out.println("are you betting on heads (0) or tails (1)? ");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println("Are you betting on heads (0) or tails (1)? ");
 			answer = Integer.valueOf(sc.nextLine());
 
 			if (answer == 0 || answer == 1) {
@@ -2826,32 +3183,45 @@ public class gh {
 		}
 
 		while (true) {
-			System.out.println("how much you betting pussy: ");
+			System.out.println("how much are you betting? ");
 			bet = Integer.valueOf(sc.nextLine());
 
 
 			if (money - bet >= 0) {
 				break;
 			}
-			System.out.println("you dont got that kinda cash homie");
+			System.out.println("You don't have enough money");
 		}
 
-
+		System.out.print("Flipping the coin");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(".");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.print(".");
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println(".");
+		
 		int coin = (int) Math.floor(Math.random() * 2); // between 0 and 1
 		if(coin == 0) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You got heads!");
 		}
 
 		if(coin == 1) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You got tails!");
 		}
 
 		if(answer == coin) {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You Win!");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You recieve a 1x payout");
 			money += bet;
 		} else {
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You Lose!");
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("You Lose the game and your bet");
 			money -= bet;
 		}
@@ -2869,8 +3239,13 @@ public class gh {
 		}
 
 		Scanner game_option_scanner = new Scanner(System.in);
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play again? (0)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 
 		int input = Integer.valueOf(game_option_scanner.nextLine());
@@ -2888,12 +3263,14 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
 	}
 
 	public static void reward_wheel() {
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Win up to $300 with the reward wheel, you get 3 free spins");
 		int[] rewards = {300, 10, 1, 100, 5, 30, 50, 20, 80, 3, 70, 40, 60, 90};
 		double reward = 0;
@@ -2915,6 +3292,7 @@ public class gh {
 				"    |___________|"
 		};
 
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		// Display initial reward wheel screen
 		displayScreen(wheel);
 
@@ -2924,6 +3302,7 @@ public class gh {
 		formatted_spins = String.format("%01.0f", free_spins);
 		wheel[2] = " //  " + formatted_spins + "             \\\\";
 
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Press Enter to spin the wheel");
 		Scanner scanner = new Scanner(System.in);
 		scanner.nextLine();
@@ -2936,7 +3315,7 @@ public class gh {
 			rotateSymbols2(rewards);
 			displayAnimatedScreen2(wheel, rewards);
 			try {
-				Thread.sleep(500); // Adjust the delay as needed for animation speed
+				Thread.sleep(300); // Adjust the delay as needed for animation speed
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -2944,10 +3323,13 @@ public class gh {
 
 		// Display result
 		int result = rewards[2];
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("\nResult:");
-		System.out.println(result);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("$" + result);
 
 		money += result;
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Your balance is now $" + money);
 		balances.set(user_indx, money);
 
@@ -2962,21 +3344,21 @@ public class gh {
 		}
 
 		Scanner game_option_scanner = new Scanner(System.in);
-
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to play agian (0)?");
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to switch game? (1)?");
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("Do you want to quit the Gambling Haven? (2)?");
 		int input = Integer.valueOf(game_option_scanner.nextLine());
 
 		if(input == 0) {
 			if(reward_wheel_spins == 0) {
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You have no reward wheel spins left");
+				try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Redirecting to main Hub...");
-				try {
-					Thread.sleep(1500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				try {Thread.sleep(1500);} catch (InterruptedException e) {e.printStackTrace();}
 				input = 1;
 			} else {
 				switch_game = false;
@@ -2993,6 +3375,7 @@ public class gh {
 
 		if (input == 2) {
 			System.out.println("Your final balance: $" + money);
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Thanks for playing!");
 			System.exit(0);
 		}
@@ -3001,16 +3384,17 @@ public class gh {
 	// Method to display the reward wheel screen with rotating rewards
 	private static void displayAnimatedScreen2(String[] screen, int[] rewards) {
 		// Print the top part of the screen
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			System.out.println(screen[i]);
 		}
+		double reward = rewards[2];
+		String formattedreward = String.format("%03.0f", reward);
 
 		// Print the middle part of the screen with current symbols rotated sideways
-		System.out.print("|       ");
-		System.out.println(rewards[2] + "       |");
+		System.out.println("||       " + formattedreward + "        ||");
 
 		// Print the bottom part of the screen
-		for (int i = 3; i < screen.length; i++) {
+		for (int i = 4; i < screen.length; i++) {
 			System.out.println(screen[i]);
 		}
 	}
