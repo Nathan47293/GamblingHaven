@@ -467,7 +467,7 @@ public class gh {
 					}
 				}
 			}
-			
+
 			System.out.print("You have been dealt: ");
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println(bj_user_card1);
@@ -477,7 +477,7 @@ public class gh {
 			if (bj_user_total > 21) {
 				break;
 			}
-			
+
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Hit or stand (h/s)?");
 			bj_user_input = sc.nextLine();
@@ -531,7 +531,7 @@ public class gh {
 			System.out.println(bj_dealer_card);
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Total Value: " + bj_dealer_total);
-			
+
 			if (bj_dealer_total > 21) {
 				break;
 			}
@@ -897,9 +897,16 @@ public class gh {
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println(tablecard5);
 
+			
+			
 			// Check User Hand Strength
-			int[] user_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_user_value1, poker_user_value2};
-			int[] user_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_user_suit1, poker_user_suit2};
+			//int[] user_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_user_value1, poker_user_value2};
+			
+			// Straight, straight flush and royal flush detection doesn't work
+			
+			int[] user_card_values = {10, 11, 14, 9, 12, 5, 13};
+			//int[] user_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_user_suit1, poker_user_suit2};
+			int[] user_card_suits = {0, 0, 0, 0, 0, 0, 0};
 			int[] dealer_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_dealer_value1, poker_dealer_value2};
 			int[] dealer_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_dealer_suit1, poker_dealer_suit2};
 
@@ -1032,7 +1039,7 @@ public class gh {
 				}
 
 			}
-			
+
 			if(user_pair_amount >= 2) {
 				user_hand_strength = 3;
 				user_first_pair_value = user_duplicates.get(0);
@@ -1379,47 +1386,65 @@ public class gh {
 			}
 
 			// Full House
-
-			int threeOfAKindValue = -1;
-			int pairValue = -1;
+			int userthreeOfAKindValue = -1;
+			int userpairValue = -1;
 			int userFullHouseStrength = -1;
-			int dealerFullHouseStrength = -1;
 			int userFullHouseKicker = -1;
+			int dealerthreeOfAKindValue = -1;
+			int dealerpairValue = -1;
+			int dealerFullHouseStrength = -1;
 			int dealerFullHouseKicker = -1;
-
-
-			Map<Integer, Integer> countMap1 = new HashMap<>();
+			
+			// User
+			// Count occurances of each card value for the user
+			Map<Integer, Integer> userValueCounts = new HashMap<>();
 			for (int value : user_card_values) {
-				countMap1.put(value, countMap1.getOrDefault(value, 0) + 1);
+				userValueCounts.put(value, userValueCounts.getOrDefault(value, 0) + 1);
 			}
 
-			for (Map.Entry<Integer, Integer> entry : countMap1.entrySet()) {
-				if (entry.getValue() == 3 && entry.getKey() > threeOfAKindValue) {
-					threeOfAKindValue = entry.getKey();
-				} else if (entry.getValue() >= 2 && entry.getKey() > pairValue) {
-					pairValue = entry.getKey();
+			// Identify the highest three of a kind
+			for (Map.Entry<Integer, Integer> entry : userValueCounts.entrySet()) {
+				if (entry.getValue() == 3 && entry.getKey() > userthreeOfAKindValue) {
+					userthreeOfAKindValue = entry.getKey();
 				}
 			}
 
-			if (threeOfAKindValue != -1 && pairValue != -1) {
-				userFullHouseStrength = threeOfAKindValue * 100 + pairValue;
-			}
-
-			Map<Integer, Integer> countMap2 = new HashMap<>();
-			for (int value : user_card_values) {
-				countMap2.put(value, countMap2.getOrDefault(value, 0) + 1);
-			}
-
-			for (Map.Entry<Integer, Integer> entry : countMap2.entrySet()) {
-				if (entry.getValue() == 3 && entry.getKey() > threeOfAKindValue) {
-					threeOfAKindValue = entry.getKey();
-				} else if (entry.getValue() >= 2 && entry.getKey() > pairValue) {
-					pairValue = entry.getKey();
+			// Identify the highest pair different from the three of a kind
+			for (Map.Entry<Integer, Integer> entry : userValueCounts.entrySet()) {
+				if (entry.getValue() >= 2 && entry.getKey() != userthreeOfAKindValue && entry.getKey() > userpairValue) {
+					userpairValue = entry.getKey();
 				}
 			}
 
-			if (threeOfAKindValue != -1 && pairValue != -1) {
-				userFullHouseStrength = threeOfAKindValue * 100 + pairValue;
+			// Calculate user full house strength
+			if (userthreeOfAKindValue != -1 && userpairValue != -1) {
+				userFullHouseStrength = userthreeOfAKindValue * 100 + userpairValue;
+			}
+
+			// Dealer
+			// Count occurances of each card value for the dealer
+			Map<Integer, Integer> dealerValueCounts = new HashMap<>();
+			for (int value : dealer_card_values) {
+				dealerValueCounts.put(value, dealerValueCounts.getOrDefault(value, 0) + 1);
+			}
+
+			// Identify the highest three of a kind
+			for (Map.Entry<Integer, Integer> entry : dealerValueCounts.entrySet()) {
+				if (entry.getValue() == 3 && entry.getKey() > dealerthreeOfAKindValue) {
+					dealerthreeOfAKindValue = entry.getKey();
+				}
+			}
+
+			// Identify the highest pair different from the three of a kind
+			for (Map.Entry<Integer, Integer> entry : dealerValueCounts.entrySet()) {
+				if (entry.getValue() >= 2 && entry.getKey() != dealerthreeOfAKindValue && entry.getKey() > dealerpairValue) {
+					dealerpairValue = entry.getKey();
+				}
+			}
+
+			// Calculate dealer full house strength
+			if (dealerthreeOfAKindValue != -1 && dealerpairValue != -1) {
+				dealerFullHouseStrength = dealerthreeOfAKindValue * 100 + dealerpairValue;
 			}
 
 			if(userFullHouseStrength != -1 && dealerFullHouseStrength == -1) {
@@ -1439,43 +1464,6 @@ public class gh {
 				if(dealerFullHouseStrength > userFullHouseStrength) {
 					dealer_hand_strength = 7.5;
 					user_hand_strength = 7;
-				}
-
-				if(dealerFullHouseStrength == userFullHouseStrength) {
-					if(poker_u_indx1 != threeOfAKindValue && poker_u_indx1 != pairValue) {
-						userFullHouseKicker = poker_u_indx1;
-					}
-
-					if(poker_u_indx2 != threeOfAKindValue && poker_u_indx2 != pairValue) {
-						if(poker_u_indx2 > poker_u_indx1) {
-							userFullHouseKicker = poker_u_indx2;
-						}
-					}
-
-					if(poker_d_indx1 != threeOfAKindValue && poker_d_indx1 != pairValue) {
-						dealerFullHouseKicker = poker_d_indx1;
-					}
-
-					if(poker_d_indx2 != threeOfAKindValue && poker_d_indx2 != pairValue) {
-						if(poker_d_indx2 > poker_d_indx1) {
-							dealerFullHouseKicker = poker_d_indx2;
-						}
-					}
-
-					if(userFullHouseKicker > dealerFullHouseKicker) {
-						user_hand_strength = 7.5;
-						dealer_hand_strength = 7;
-					}
-
-					if(userFullHouseKicker < dealerFullHouseKicker) {
-						user_hand_strength = 7;
-						dealer_hand_strength = 7.5;
-					}
-
-					if(userFullHouseKicker == dealerFullHouseKicker) {
-						user_hand_strength = 7;
-						dealer_hand_strength = 7;
-					}
 				}
 			}
 
@@ -2126,7 +2114,7 @@ public class gh {
 			int bet_multiplier_reward = 0;
 			double displayfreespins = free_spins;
 			String formattedfreespins = String.format("%02.0f", displayfreespins);
-			
+
 			System.out.println("One $ is 1x your bet");
 			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Two $ is 24x your bet");
@@ -2257,7 +2245,7 @@ public class gh {
 				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve no reward");
 			}
-			
+
 			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Your balance is now $" + money);
 			balances.set(user_indx, money);
@@ -2402,7 +2390,7 @@ public class gh {
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("how much are you betting? ");
 			bet = Integer.valueOf(sc.nextLine());
-			
+
 			if (money - bet >= 0) {
 				break;
 			}
@@ -2444,7 +2432,7 @@ public class gh {
 		System.out.print("The dealer has dealt: ");
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println(war_dealer_card);
-		
+
 		if(war_dealer_value == war_user_value) {
 			war = true;
 		}
@@ -2482,7 +2470,7 @@ public class gh {
 				war_u_indx2 = (int) Math.floor(Math.random() * 4); // between 0 and 3
 			}
 			String player_3 = deck[war_u_indx1][war_u_indx2];
-			
+
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.print("The player draws a ");
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
@@ -2737,7 +2725,7 @@ public class gh {
 		System.out.print(".");
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println(".");
-		
+
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println("The Winning Number is " + winning_number + " Which is " + winning_color);
 
@@ -3023,7 +3011,7 @@ public class gh {
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println(card1);
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-		
+
 		do {
 			keep_playing = false;
 
@@ -3083,7 +3071,7 @@ public class gh {
 					System.out.println("You lose your bet");
 				}
 			}
-			
+
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Your balance is: $" + money);
 
@@ -3200,7 +3188,7 @@ public class gh {
 		System.out.print(".");
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		System.out.println(".");
-		
+
 		int coin = (int) Math.floor(Math.random() * 2); // between 0 and 1
 		if(coin == 0) {
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
