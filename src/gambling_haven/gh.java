@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 // Version 1.0
@@ -897,18 +900,29 @@ public class gh {
 			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println(tablecard5);
 
+			/*System.out.println("Royal Flush: 100 times the initital bet");
+			System.out.println("Straight Flush: 50 times the initial bet");
+			System.out.println("Four of a Kind: 30 times the inital bet");
+			System.out.println("Full House: 7 times the initial bet");
+			System.out.println("Flush: 5 times the inital bet");
+			System.out.println("Straight: 4 times the intial bet");
+			System.out.println("Three of a Kind: 3 times the initial bet");
+			System.out.println("Two Pair: 1 times the intial bet");
+			System.out.println("One Pair: 0.3 times the inital bet");
+			System.out.println("High Card: No payout");*/
 			
+			// Check if hands above straight work for dealer
+			// Check if straight and straight flush can use low ace for user and dealer
 			
 			// Check User Hand Strength
 			//int[] user_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_user_value1, poker_user_value2};
-			
-			// Straight, straight flush and royal flush detection doesn't work
-			
-			int[] user_card_values = {10, 11, 14, 9, 12, 5, 13};
 			//int[] user_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_user_suit1, poker_user_suit2};
-			int[] user_card_suits = {0, 0, 0, 0, 0, 0, 0};
-			int[] dealer_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_dealer_value1, poker_dealer_value2};
-			int[] dealer_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_dealer_suit1, poker_dealer_suit2};
+			int [] user_card_values = {14, 2, 3, 4, 5, 7, 2};
+			int [] user_card_suits = {0, 1, 1, 1, 0, 0, 0};
+			//int[] dealer_card_values = {tablecard1_value, tablecard2_value, tablecard3_value, tablecard4_value, tablecard5_value, poker_dealer_value1, poker_dealer_value2};
+			//int[] dealer_card_suits = {tablecard1_suit, tablecard2_suit, tablecard3_suit, tablecard4_suit, tablecard5_suit, poker_dealer_suit1, poker_dealer_suit2};
+			int [] dealer_card_values = {14, 2, 3, 4, 5, 7, 2};
+			int [] dealer_card_suits = {0, 1, 1, 1, 0, 0, 0};
 
 			for (int i = 0; i < user_card_values.length - 1; i++) {
 				for (int j = 0; j < user_card_values.length - i - 1; j++) {
@@ -1248,66 +1262,70 @@ public class gh {
 			}
 
 			// Straight
-			int user_consecutiveCount = 0;
+			int user_consecutiveCount = 1; // Start with 1 to count the first card
 			int user_highestCard = 0;
 			boolean user_hasStraight = false;
 
-			for (int i = 0; i < user_card_values.length - 1; i++) {
-				if (user_card_values[i] - user_card_values[i + 1] == 1) {
-					user_consecutiveCount++;
-					user_highestCard = Math.max(user_highestCard, user_card_values[i]);
-				} else {
-					user_consecutiveCount = 0;
-				}
+			Set<Integer> user_uniqueValues = new HashSet<>();
+			for (int value : user_card_values) {
+			    user_uniqueValues.add(value);
+			}
+			Integer[] user_sortedValues = user_uniqueValues.toArray(new Integer[0]);
+			Arrays.sort(user_sortedValues);
+
+			for (int i = 0; i < user_sortedValues.length - 1; i++) {
+			    if (user_sortedValues[i] + 1 == user_sortedValues[i + 1]) {
+			        user_consecutiveCount++;
+			        user_highestCard = user_sortedValues[i + 1];
+			        if (user_consecutiveCount >= 5) {
+			            user_hasStraight = true;
+			            break;
+			        }
+			    } else {
+			        user_consecutiveCount = (i < user_sortedValues.length - 2 && user_sortedValues[i] + 2 == user_sortedValues[i + 2]) ? 1 : 0;
+			    }
 			}
 
-			if (user_consecutiveCount >= 4) { // 5 consecutive values form a straight
-				user_hasStraight = true;
-			}
-
-
-			int dealer_consecutiveCount = 0;
+			int dealer_consecutiveCount = 1;
 			int dealer_highestCard = 0;
 			boolean dealer_hasStraight = false;
 
-			for (int i = 0; i < dealer_card_values.length - 1; i++) {
-				if (dealer_card_values[i] - dealer_card_values[i + 1] == 1) {
-					dealer_consecutiveCount++;
-					dealer_highestCard = Math.max(dealer_highestCard, dealer_card_values[i]);
-				} else {
-					dealer_consecutiveCount = 0;
-				}
+			Set<Integer> dealer_uniqueValues = new HashSet<>();
+			for (int value : dealer_card_values) {
+			    dealer_uniqueValues.add(value);
+			}
+			Integer[] dealer_sortedValues = dealer_uniqueValues.toArray(new Integer[0]);
+			Arrays.sort(dealer_sortedValues);
+
+			for (int i = 0; i < dealer_sortedValues.length - 1; i++) {
+			    if (dealer_sortedValues[i] + 1 == dealer_sortedValues[i + 1]) {
+			        dealer_consecutiveCount++;
+			        dealer_highestCard = dealer_sortedValues[i + 1];
+			        if (dealer_consecutiveCount >= 5) {
+			            dealer_hasStraight = true;
+			            break;
+			        }
+			    } else {
+			        dealer_consecutiveCount = (i < dealer_sortedValues.length - 2 && dealer_sortedValues[i] + 2 == dealer_sortedValues[i + 2]) ? 1 : 0;
+			    }
 			}
 
-			if (dealer_consecutiveCount >= 4) { // 5 consecutive values form a straight
-				dealer_hasStraight = true;
-			}
-
-			// Comparing possible straights
-
-			if(user_hasStraight == true && dealer_hasStraight == false) {
-				user_hand_strength = 5;
-			}
-
-			if(dealer_hasStraight == true && user_hasStraight == false) {
-				dealer_hand_strength = 5;
-			}
-
-			if(user_hasStraight == true && dealer_hasStraight == true) {
-				if(user_highestCard > dealer_highestCard) {
-					user_hand_strength = 5.5;
-					dealer_hand_strength = 5;
-				}
-
-				if(user_highestCard < dealer_highestCard) {
-					user_hand_strength = 5;
-					dealer_hand_strength = 5.5;
-				}
-
-				if(user_highestCard == dealer_highestCard) {
-					dealer_hand_strength = 5;
-					user_hand_strength = 5;
-				}
+			// Determine hand strength based on the straight detection
+			if (user_hasStraight && !dealer_hasStraight) {
+			    user_hand_strength = 5;
+			} else if (!user_hasStraight && dealer_hasStraight) {
+			    dealer_hand_strength = 5;
+			} else if (user_hasStraight && dealer_hasStraight) {
+			    // Comparing the highest card of straights
+			    if (user_highestCard > dealer_highestCard) {
+			        user_hand_strength = 5.5;
+			    } else if (user_highestCard < dealer_highestCard) {
+			        dealer_hand_strength = 5.5;
+			    } else {
+			        // If the highest cards are equal, the hands are considered equal strength for straights.
+			        user_hand_strength = 5;
+			        dealer_hand_strength = 5;
+			    }
 			}
 
 			// Flush
@@ -1470,239 +1488,194 @@ public class gh {
 			// Four of a Kind
 
 			int user_highest_foak_value = 0;
-			for(int value : user_card_values) {
-				int frequency = 0;
-				for(int v : user_card_values) {
-					if(v==value) {
-						frequency++;
-					}
-				}
+			for (int value : user_card_values) {
+			    int frequency = 0;
+			    for (int v : user_card_values) {
+			        if (v == value) {
+			            frequency++;
+			        }
+			    }
 
-				if (frequency >= 4 && value > user_highest_foak_value) {
-					user_highest_foak_value = value;
-				}
+			    // Check for exactly four occurrences to determine Four of a Kind
+			    if (frequency == 4 && value > user_highest_foak_value) {
+			        user_highest_foak_value = value;
+			    }
 			}
-
 
 			int dealer_highest_foak_value = 0;
-			for(int value : dealer_card_values) {
-				int frequency = 0;
-				for(int v : dealer_card_values) {
-					if(v==value) {
-						frequency++;
-					}
-				}
+			for (int value : dealer_card_values) {
+			    int frequency = 0;
+			    for (int v : dealer_card_values) {
+			        if (v == value) {
+			            frequency++;
+			        }
+			    }
 
-				if (frequency >= 3 && value > dealer_highest_foak_value) {
-					dealer_highest_foak_value = value;
-				}
+			    // Corrected the condition to frequency == 4 for accurate FOAK detection
+			    if (frequency == 4 && value > dealer_highest_foak_value) {
+			        dealer_highest_foak_value = value;
+			    }
 			}
-			//Assigning FOAK kickers
+
+			// The kicker logic seems unnecessary for FOAK but kept as per your structure
+			// Kicker determination logic should be revised if kickers are relevant for other hand types
 			int dealer_foak_kicker = 0;
 			int user_foak_kicker = 0;
 
-			if(poker_user_value1 != user_highest_foak_value && poker_user_value2 == user_highest_foak_value) {
-				user_foak_kicker = poker_user_value1;
+			// Assuming poker_user_value1 and poker_user_value2 are the individual player cards
+			if (poker_user_value1 != user_highest_foak_value) {
+			    user_foak_kicker = poker_user_value1;
+			}
+			if (poker_user_value2 != user_highest_foak_value && poker_user_value2 > user_foak_kicker) {
+			    user_foak_kicker = poker_user_value2;
 			}
 
-			if(poker_user_value1 == user_highest_foak_value && poker_user_value2 != user_highest_foak_value) {
-				user_foak_kicker = poker_user_value2;
+			if (poker_dealer_value1 != dealer_highest_foak_value) {
+			    dealer_foak_kicker = poker_dealer_value1;
 			}
-
-			if(poker_dealer_value1 != dealer_highest_foak_value && poker_dealer_value2 == dealer_highest_foak_value) {
-				dealer_foak_kicker = poker_dealer_value1;
-			}
-
-			if(poker_dealer_value1 == dealer_highest_foak_value && poker_dealer_value2 != dealer_highest_foak_value) {
-				dealer_foak_kicker = poker_dealer_value2;
+			if (poker_dealer_value2 != dealer_highest_foak_value && poker_dealer_value2 > dealer_foak_kicker) {
+			    dealer_foak_kicker = poker_dealer_value2;
 			}
 
 			// Assigning Hand Strength
-			if(user_highest_foak_value != 0 && dealer_highest_foak_value == 0) {
-				user_hand_strength = 8;
+			if (user_highest_foak_value > 0) {
+			    user_hand_strength = 8;
+			}
+			if (dealer_highest_foak_value > 0) {
+			    dealer_hand_strength = 8;
+			}
+			// Comparing FOAK with the same value should not be necessary as it can't occur in standard poker rules
+			if (user_highest_foak_value > 0 && dealer_highest_foak_value > 0 && user_highest_foak_value == dealer_highest_foak_value) {
+			    // This scenario should theoretically never happen in a real game unless there is a deck issue
+			    user_hand_strength = 8;
+			    dealer_hand_strength = 8;
 			}
 
-			if(user_highest_foak_value == 0 && dealer_highest_foak_value != 0) {
-				dealer_hand_strength = 8;
-			}
-
-			if(user_highest_foak_value != 0 && dealer_highest_foak_value != 0) {
-				if(user_highest_foak_value > dealer_highest_foak_value) {
-					user_hand_strength = 8.5;
-					dealer_hand_strength = 8;
-				}
-				if(user_highest_foak_value < dealer_highest_foak_value) {
-					dealer_hand_strength = 8.5;
-					user_hand_strength = 8;
-				}
-				if(user_highest_foak_value == dealer_highest_foak_value) {
-					if(user_foak_kicker > dealer_foak_kicker) {
-						user_hand_strength = 8.5;
-						dealer_hand_strength = 8;
-					}
-
-					if(user_foak_kicker < dealer_foak_kicker) {
-						user_hand_strength = 8;
-						dealer_hand_strength = 8.5;
-					}
-					if(user_foak_kicker == dealer_foak_kicker) {
-						user_hand_strength = 8;
-						dealer_hand_strength = 8;
-					}
-				}
-			}
-
-			// Straight Flush
-			int user_maxStraightFlushValue = 0;
-			int dealer_maxStraightFlushValue = 0;
+			// Straight Flush detection for the user
 			boolean user_hasStraightFlush = false;
+			int user_highestStraightFlush = 0;
+
+			// Iterate through each suit
+			for (int suit = 0; suit <= 3; suit++) {
+			    final int currentSuit = suit;
+			    for (int startValue = 14; startValue >= 5; startValue--) {
+			        boolean isStraightFlush = true;
+			        for (int offset = 0; offset < 5; offset++) {
+			            int valueToCheck = startValue - offset;
+			            int finalValueToCheck = valueToCheck;
+			            boolean hasValueAndSuit = IntStream.range(0, user_card_suits.length).anyMatch(i -> user_card_values[i] == finalValueToCheck && user_card_suits[i] == currentSuit);
+			            if (!hasValueAndSuit) {
+			                isStraightFlush = false;
+			                break;
+			            }
+			        }
+
+			        if (isStraightFlush) {
+			            user_hasStraightFlush = true;
+			            user_highestStraightFlush = startValue;
+			            break;
+			        }
+			    }
+			    if (user_hasStraightFlush) break;
+			}
+
+			// Straight Flush detection for the dealer
 			boolean dealer_hasStraightFlush = false;
+			int dealer_highestStraightFlush = 0;
 
-			// Checking user for highest straight flush
-			// Iterate through all possible starting values for straight flushes
-			for (int startValue = 14; startValue >= 5; startValue--) {
-				// Check if there are cards of the same suit as the current start value
-				for (int j = 0; j < user_card_values.length; j++) {
-					if (user_card_values[j] == startValue) {
-						int suitCount = 1; // Counter for the number of cards with the same suit
-						for (int k = j + 1; k < user_card_values.length; k++) {
-							if (user_card_values[k] == startValue - (j - k) && user_card_suits[j] == user_card_suits[k]) {
-								suitCount++;
-							}
-						}
-						// If there are at least 5 cards with the same suit and consecutive values, it's a straight flush
-						if (suitCount >= 5) {
-							user_maxStraightFlushValue = startValue;
-							user_hasStraightFlush = true;
-							break;
-						}
-					}
-				}
+			// Iterate through each suit for the dealer
+			for (int suit = 0; suit <= 3; suit++) {
+			    final int currentSuit = suit;
+			    for (int startValue = 14; startValue >= 5; startValue--) {
+			        boolean isStraightFlush = true;
+			        for (int offset = 0; offset < 5; offset++) {
+			            int valueToCheck = startValue - offset;
+			            int finalValueToCheck = valueToCheck;
+			            boolean hasValueAndSuit = IntStream.range(0, dealer_card_suits.length).anyMatch(i -> dealer_card_values[i] == finalValueToCheck && dealer_card_suits[i] == currentSuit);
+			            if (!hasValueAndSuit) {
+			                isStraightFlush = false;
+			                break;
+			            }
+			        }
 
-				if (user_hasStraightFlush) {
-					break;
-				}
+			        if (isStraightFlush) {
+			            dealer_hasStraightFlush = true;
+			            dealer_highestStraightFlush = startValue;
+			            break;
+			        }
+			    }
+			    if (dealer_hasStraightFlush) break;
 			}
 
-			// Checking dealer for highest straight flush
-			// Iterate through all possible starting values for straight flushes
-			for (int startValue = 14; startValue >= 5; startValue--) {
-				// Check if there are cards of the same suit as the current start value
-				for (int j = 0; j < dealer_card_values.length; j++) {
-					if (dealer_card_values[j] == startValue) {
-						int suitCount = 1; // Counter for the number of cards with the same suit
-						for (int k = j + 1; k < dealer_card_values.length; k++) {
-							if (dealer_card_values[k] == startValue - (j - k) && dealer_card_suits[j] == dealer_card_suits[k]) {
-								suitCount++;
-							}
-						}
-						// If there are at least 5 cards with the same suit and consecutive values, it's a straight flush
-						if (suitCount >= 5) {
-							dealer_maxStraightFlushValue = startValue;
-							dealer_hasStraightFlush = true;
-							break;
-						}
-					}
-				}
 
-				if (dealer_hasStraightFlush) {
-					break;
-				}
-			}
-
-			if(user_hasStraightFlush == true && dealer_hasStraightFlush == false) {
-				user_hand_strength = 9;
-			}
-
-			if(user_hasStraightFlush == false && dealer_hasStraightFlush == true) {
-				dealer_hand_strength = 9;
-			}
-
-			if(user_hasStraightFlush == true && dealer_hasStraightFlush == true) {
-				if(user_maxStraightFlushValue > dealer_maxStraightFlushValue) {
-					user_hand_strength = 9.5;
-					dealer_hand_strength = 9;
-				}
-
-				if(user_maxStraightFlushValue < dealer_maxStraightFlushValue) {
-					user_hand_strength = 9;
-					dealer_hand_strength = 9.5;
-				}
-
-				if(user_maxStraightFlushValue == dealer_maxStraightFlushValue) {
-					user_hand_strength = 9;
-					dealer_hand_strength = 9;
-				}
+			// Hand strength comparison
+			if (user_hasStraightFlush && !dealer_hasStraightFlush) {
+			    user_hand_strength = 9;
+			} else if (!user_hasStraightFlush && dealer_hasStraightFlush) {
+			    dealer_hand_strength = 9;
+			} else if (user_hasStraightFlush && dealer_hasStraightFlush) {
+			    if (user_highestStraightFlush > dealer_highestStraightFlush) {
+			        user_hand_strength = 9.5;
+			    } else if (user_highestStraightFlush < dealer_highestStraightFlush) {
+			        dealer_hand_strength = 9.5;
+			    } else {
+			        user_hand_strength = 9;
+			        dealer_hand_strength = 9;
+			    }
 			}
 
 
 			// Royal Flush
-			// User
-			int[] user_royalFlushValues = {10, 11, 12, 13, 14}; // Values for 10, Jack, Queen, King, Ace
-			boolean[] user_foundValues = new boolean[5];
 			boolean user_HasRoyalFlush = false;
 
-			// Check if there are at least five cards in the same suit
-			int[] userSuitCount = new int[4];
-			for (int suit : user_card_suits) {
-				userSuitCount[suit]++;
-			}
-			int user_maxSuitCount = Arrays.stream(userSuitCount).max().getAsInt();
+			// Check each suit to find a Royal Flush
+			for (int suit = 0; suit < 4; suit++) {
+			    boolean hasRoyalFlush = true;
+			    for (int value : new int[]{10, 11, 12, 13, 14}) {
+			        final int suitToCheck = suit;
+			        boolean hasValue = IntStream.range(0, user_card_values.length)
+			            .anyMatch(i -> user_card_values[i] == value && user_card_suits[i] == suitToCheck);
+			        if (!hasValue) {
+			            hasRoyalFlush = false;
+			            break;
+			        }
+			    }
 
-			// Check for the presence of each value in the royal flush
-			for (int i = 0; i < user_card_values.length; i++) {
-				for (int j = 0; j < user_royalFlushValues.length; j++) {
-					if (user_card_values[i] == user_royalFlushValues[j] && user_card_suits[i] == user_maxSuitCount) {
-						user_foundValues[j] = true;
-						break;
-					}
-				}
-			}
-
-			// Check if all royal flush values are found in the same suit
-			for (boolean found : user_foundValues) {
-				if (!found) {
-					user_HasRoyalFlush = false;
-					break;
-				}
+			    if (hasRoyalFlush) {
+			        user_HasRoyalFlush = true;
+			        break;
+			    }
 			}
 
-			// Dealer
-			int[] dealer_royalFlushValues = {10, 11, 12, 13, 14}; // Values for 10, Jack, Queen, King, Ace
-			boolean[] dealer_foundValues = new boolean[5];
+			// Royal Flush detection for Dealer
 			boolean dealer_HasRoyalFlush = false;
 
-			// Check if there are at least five cards in the same suit
-			int[] dealerSuitCount = new int[4];
-			for (int suit : dealer_card_suits) {
-				dealerSuitCount[suit]++;
-			}
-			int maxSuitCount = Arrays.stream(dealerSuitCount).max().getAsInt();
+			// Check each suit to find a Royal Flush
+			for (int suit = 0; suit < 4; suit++) {
+			    boolean hasRoyalFlush = true;
+			    for (int value : new int[]{10, 11, 12, 13, 14}) {
+			        final int suitToCheck = suit;
+			        boolean hasValue = IntStream.range(0, dealer_card_values.length)
+			            .anyMatch(i -> dealer_card_values[i] == value && dealer_card_suits[i] == suitToCheck);
+			        if (!hasValue) {
+			            hasRoyalFlush = false;
+			            break;
+			        }
+			    }
 
-			// Check for the presence of each value in the royal flush
-			for (int i = 0; i < dealer_card_values.length; i++) {
-				for (int j = 0; j < dealer_royalFlushValues.length; j++) {
-					if (dealer_card_values[i] == dealer_royalFlushValues[j] && dealer_card_suits[i] == maxSuitCount) {
-						dealer_foundValues[j] = true;
-						break;
-					}
-				}
-			}
-
-			// Check if all royal flush values are found in the same suit
-			for (boolean found : dealer_foundValues) {
-				if (!found) {
-					dealer_HasRoyalFlush = false;
-					break;
-				}
+			    if (hasRoyalFlush) {
+			        dealer_HasRoyalFlush = true;
+			        break;
+			    }
 			}
 
-			if(user_HasRoyalFlush == true) {
-				user_hand_strength = 10;
+			// Assigning hand strength
+			if (user_HasRoyalFlush) {
+			    user_hand_strength = 10;
 			}
 
-			if(dealer_HasRoyalFlush == true) {
-				dealer_hand_strength = 10;
+			if (dealer_HasRoyalFlush) {
+			    dealer_hand_strength = 10;
 			}
 
 			String user_hand = "";
