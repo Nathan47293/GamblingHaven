@@ -2063,9 +2063,22 @@ public class gh {
 			}
 			System.out.println("you either dont have the cash or the bet isn't between $0 and $9999");
 		}
-
+		
+		System.out.println("One $ is 1x your bet");
+		try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Two $ is 24x your bet");
+		try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Three $ is 54x your bet");
+		try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("One 7 is a free spin");
+		try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Two 7 is 7 free spins and 17x your bet");
+		try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+		System.out.println("Three 7 is 17 free spins and 37x your bet");
+		try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+		keep_playing = false;
+		
 		do {
-			keep_playing = false;
 			// Define symbols for each column
 			char[] symbols1 = {'-', '1', '$', '7', '#', '~', '|','I', 'R', '@', 'O', '%', '_', '&', '4', 'H', '>', 'L'};
 			char[] symbols2 = {'5', '<', '(', '*', 'M', '^', '2', '$', '7', '!', '?', 'P', '+', ':','S', 'J', 'G','{'};
@@ -2079,18 +2092,7 @@ public class gh {
 			double displayfreespins = free_spins;
 			String formattedfreespins = String.format("%02.0f", displayfreespins);
 
-			System.out.println("One $ is 1x your bet");
-			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("Two $ is 24x your bet");
-			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("Three $ is 54x your bet");
-			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("One 7 is a free spin");
-			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("Two 7 is 7 free spins and 17x your bet");
-			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("Three 7 is 17 free spins and 37x your bet");
-			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+			
 			double displaybet = bet;
 			String formattedbet = String.format("%04.0f", displaybet);
 			// ASCII art of the slot machine screen with a lever
@@ -2119,13 +2121,14 @@ public class gh {
 				formattedfreespins = String.format("%02.0f", displayfreespins);
 				screen[2] = "|  |" + formattedfreespins + "|   |  " + formattedbet + "|  |";
 			}
-
-			// Wait for user input to activate the lever
-			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("Press Enter to activate the lever.");
-			Scanner scanner = new Scanner(System.in);
-			scanner.nextLine();
-
+			
+			if(keep_playing == false) {
+				// Wait for user input to activate the lever
+				System.out.println("Press Enter to activate the lever.");
+				Scanner scanner = new Scanner(System.in);
+				scanner.nextLine();
+			}
+			
 			// Generate random number of rotations for each column
 			int rotations1 = (int) Math.floor(1 + Math.random() * 19); // Between 1 and 18
 			int rotations2 = (int) Math.floor(1 + Math.random() * 19);
@@ -2148,9 +2151,8 @@ public class gh {
 			result[0] = symbols1[2];
 			result[1] = symbols2[2];
 			result[2] = symbols3[2];
-			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println("\nResult:");
-			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.print("\nResult: ");
 			System.out.println(result);
 
 			// Calculating dollar count and seven count
@@ -2173,44 +2175,44 @@ public class gh {
 
 			if(dollar_count != 0 && seven_count == 0) {
 				money += bet*bet_multiplier_reward;
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + dollar_count + " $ in your spin");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
 			}
 
 			if(dollar_count == 0 && seven_count != 0) {
 				money += bet*bet_multiplier_reward;
 				free_spins += free_spin_reward;
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + seven_count + " 7 in your spin");
 				if(seven_count > 1) {
-					try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+					try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 					System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
 				}
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve " + free_spin_reward + " free spins!");
 			}
 
 			if(dollar_count != 0 && seven_count != 0) {
 				money += bet*bet_multiplier_reward;
 				free_spins += free_spin_reward;
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You got " + seven_count + " 7" + " and " + dollar_count + " $ in your spin");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve a " + bet_multiplier_reward + "x payout");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve " + free_spin_reward + " free spins!");
 			}
 
 			if(dollar_count == 0 && seven_count == 0) {
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You didn't get any 7 or $ in your spin");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("You recieve no reward");
 			}
 
-			try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+			try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			System.out.println("Your balance is now $" + money);
 			balances.set(user_indx, money);
 
@@ -2228,15 +2230,15 @@ public class gh {
 			int input = -1;
 
 			while(true) {
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue (0)?");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to contiue but change your bet (only works when you have no free spins) (1)?");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to switch game? (2)?");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Do you want to quit the Gambling Haven? (3)?");
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 				System.out.println("Keep in mind that switching games or quitting will reset your free spins");
 				input = Integer.valueOf(game_option_scanner.nextLine());
 				if(input == 0 || input == 2 || input == 3) {
