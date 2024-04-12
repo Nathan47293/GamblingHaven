@@ -14,7 +14,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-// Version 1.0
+
+// Version 1.3
+/* Auto-Bet
+ * Blackjack (define a number, if x > num hit, define number of rounds, bet)
+ * poker (define a minimum value, if combined value of hand >= num, bet, count hands that are too low as a round, define number of rounds, bet)
+ * dice roll (define type of bet, number of bets, bet)
+ * slot machine (define number of spins, bet)
+ * war (define number of bets, bet)
+ * roulette (define type of bet, number of bets, bet)
+ * high-low (define a number, if x < num pick higher, if x > num pick lower, define number of bets, bet)
+ * 
+ * Other features
+ * When repeating games, change input to enter instead of typing a number
+ * Sound Queue when winning
+ */
 
 public class gh {
 
